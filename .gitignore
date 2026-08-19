@@ -1,0 +1,14 @@
+node_modules/
+test_article.md
+publish.js
+test_stealth.js
+*.tar.gz
+*.DS_Store
+
+# 凭据与运行时产物（防御性）
+.env
+.env.*
+*.log
+.hermes-x-profile/
+*-profile/
+generated/

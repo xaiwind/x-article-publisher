@@ -1,0 +1,21 @@
+{
+  "name": "x-article-publisher",
+  "version": "4.3.0-local",
+  "description": "Publish Markdown articles to X Articles via Playwright (headless, drafts only)",
+  "main": "auto-publish.js",
+  "scripts": {
+    "auto": "node auto-publish.js"
+  },
+  "dependencies": {
+    "playwright-core": "^1.49.0"
+  },
+  "keywords": [
+    "x",
+    "twitter",
+    "articles",
+    "publisher",
+    "playwright"
+  ],
+  "license": "MIT",
+  "author": "想风 (xaiwind)"
+}
