@@ -17,5 +17,16 @@
     "playwright"
   ],
   "license": "MIT",
-  "author": "想风 (xaiwind)"
+  "author": "想风 (xaiwind)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xaiwind/x-article-publisher.git"
+  },
+  "homepage": "https://github.com/xaiwind/x-article-publisher#readme",
+  "bugs": {
+    "url": "https://github.com/xaiwind/x-article-publisher/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }
