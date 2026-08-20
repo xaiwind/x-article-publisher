@@ -107,9 +107,14 @@ x-article-publisher/
 - **Node.js ≥ 18**
 - **Google Chrome**（系统安装的 Chrome，不是 Playwright 下载的 Chromium）
 - **X Premium** —— X Articles 功能本身需要
-- 操作系统：macOS / Windows / Linux 都能跑，差异见下
+- 操作系统：macOS 已实测；Windows / Linux 代码上支持但未实测，见「平台支持」
 
 ## 平台支持
+
+> **实测状态**：目前只在 **macOS** 上实际跑通过。
+> 下表中 Windows / Linux 的结论来自代码核查（平台守卫、异常捕获路径，
+> 以及 Node 与 Playwright 自身的跨平台保证），**尚未在真机验证**。
+> 逻辑上应该可用，但首次使用遇到问题很正常——欢迎提 issue，我会修。
 
 核心链路（Playwright 驱动系统 Chrome、Draft.js 注入、图片上传、草稿保存）
 **三个平台完全一致**，没有平台专属代码。有差异的只有两个辅助功能：
