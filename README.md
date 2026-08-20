@@ -104,19 +104,77 @@ x-article-publisher/
 
 ## 要求
 
-- **macOS** —— 用到 `pgrep` / `pkill` / `sips`，其他平台需替换
 - **Node.js ≥ 18**
-- **Google Chrome**（系统 Chrome，非下载版 Chromium）
+- **Google Chrome**（系统安装的 Chrome，不是 Playwright 下载的 Chromium）
 - **X Premium** —— X Articles 功能本身需要
+- 操作系统：macOS / Windows / Linux 都能跑，差异见下
+
+## 平台支持
+
+核心链路（Playwright 驱动系统 Chrome、Draft.js 注入、图片上传、草稿保存）
+**三个平台完全一致**，没有平台专属代码。有差异的只有两个辅助功能：
+
+| 能力 | macOS | Windows | Linux | 缺失时的后果 |
+|---|:---:|:---:|:---:|---|
+| 发布主流程 | ✅ | ✅ | ✅ | — |
+| 登录态持久化 | ✅ | ✅ | ✅ | — |
+| 图片自动压缩（`sips`） | ✅ | ⚠️ 跳过 | ⚠️ 跳过 | 大图原样上传，见下 |
+| 检测并关闭占用浏览器（`pgrep`/`pkill`） | ✅ | ⚠️ 失效 | ✅ | 需手动关 Chrome，见下 |
+
+两处降级都**不会让程序崩溃**：`sips` 有 `process.platform !== 'darwin'` 守卫直接跳过；
+`pgrep` 缺失会抛 ENOENT，已被 try/catch 捕获并当作"没有占用"处理。
+
+### Windows / Linux 用户注意
+
+**1. 图片不会自动压缩**
+
+macOS 上大于 150KB 的图会用系统自带的 `sips` 压到长边 1280px / JPEG 82，
+其他平台直接跳过，**上传原图**。影响：文章体积偏大、上传变慢，
+超大图（如 10MB 的截图）可能上传失败。
+
+对策：发布前自己先压一遍。任选其一——
+
+```bash
+# ImageMagick（三平台通用）
+magick input.png -resize 1280x1280\> -quality 82 output.jpg
+
+# 或 Windows PowerShell 里用 ffmpeg
+ffmpeg -i input.png -vf "scale='min(1280,iw)':-1" -q:v 5 output.jpg
+```
+
+**2. Windows 上「自动关闭上一个浏览器」不生效**
+
+脚本靠 `pgrep`/`pkill` 检测有没有别的 Chrome 正占着同一个登录态目录，
+Windows 没这两个命令，这步会静默跳过。
+
+影响：如果上次运行的浏览器窗口还开着（不带 `--headless` 时会一直开），
+再跑一次会因为 profile 被锁而启动失败。脚本仍会尝试清理锁文件
+（`SingletonLock` 等，这步是跨平台的）并重试一次，多数情况能自愈。
+
+对策：**跑之前先把之前那个自动化 Chrome 窗口关掉**。或者从任务管理器结束
+对应的 chrome.exe。注意别关掉你日常用的 Chrome——自动化用的是独立
+profile，和你平时的浏览器互不干扰。
+
+**3. 登录态目录位置**
+
+| 平台 | 默认路径 |
+|---|---|
+| macOS / Linux | `~/.hermes-x-profile` |
+| Windows | `C:\Users\<你的用户名>\.hermes-x-profile` |
+
+用 `--profile=<dir>` 可以改到别处。
 
 ## 排错
 
-| 现象 | 解决 |
-|---|---|
-| Chrome 启动失败 | profile 锁残留，脚本会自动清理重试；仍失败则 `pkill -f .hermes-x-profile` 后重跑 |
-| 「没找到写文章按钮」 | 未登录（先不带 `--headless` 跑一次），或 X 改了 UI |
-| 结果里 `imgOk` 与图片数不符 | 检查图片路径是否可解析；看输出有无残留 `__XPOSTER_` 标记 |
-| 编辑器等待超时 | 加大 `--timeout=<ms>` |
+| 现象 | 平台 | 解决 |
+|---|:---:|---|
+| Chrome 启动失败 / profile 被占用 | macOS·Linux | 脚本会自动清理锁并重试；仍失败则 `pkill -f .hermes-x-profile` 后重跑 |
+| Chrome 启动失败 / profile 被占用 | Windows | 先手动关掉上一个自动化 Chrome 窗口（或任务管理器结束对应 chrome.exe），再重跑。不要关你日常用的 Chrome |
+| 找不到 Chrome | 全平台 | 需要**系统安装**的 Google Chrome。仅装了 Edge 或 Chromium 不行 |
+| 「没找到写文章按钮」 | 全平台 | 未登录（先不带 `--headless` 跑一次完成登录），或 X 改了 UI |
+| 结果里 `imgOk` 与图片数不符 | 全平台 | 检查图片路径是否可解析；看输出有无残留 `__XPOSTER_` 标记 |
+| 图片上传失败 / 很慢 | Windows·Linux | 无自动压缩，大图需自己先压到长边 ≤1280，见「平台支持」 |
+| 编辑器等待超时 | 全平台 | 加大 `--timeout=<ms>`（默认 180000） |
 
 **注意**：清理残留标记必须用引擎的 `window.__xCleanupMarkers`，
 不要用键盘选区（macOS 上 Shift+End 会选到文档末尾）。
