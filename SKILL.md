@@ -9,6 +9,23 @@ Publish a local Markdown file into an X Articles draft, silently (headless).
 The tool **never clicks Publish** — the user reviews the draft and publishes
 manually from their own browser.
 
+## Install location
+
+Install this repo into any agent's per-user `skills/` directory and run
+`npm install` inside it. Known host directories:
+
+- Claude Code: `~/.claude/skills/` (macOS/Linux) or `%USERPROFILE%\.claude\skills\` (Windows)
+- DeepSeek Harness: `~/.agents/skills/` (macOS/Linux) or `%USERPROFILE%\.agents\skills\` (Windows)
+
+Example (macOS, Claude Code):
+
+```bash
+git clone https://github.com/xaiwind/x-article-publisher.git ~/.claude/skills/x-article-publisher
+cd ~/.claude/skills/x-article-publisher && npm install
+```
+
+For DeepSeek Harness, replace `~/.claude/skills` with `~/.agents/skills`.
+
 ## Usage
 
 Given a Markdown file path, run in the background:

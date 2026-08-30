@@ -10,6 +10,27 @@
 
 ## 安装
 
+### 方式一：作为 Skill 安装（推荐）
+
+本项目本质是一个 AI Skill：装进 AI 助手后，只要说一句「帮我把文章发布到推特」，助手就会自动调用它。支持两个助手的 skills 目录：
+
+| AI 助手 | macOS / Linux | Windows |
+| --- | --- | --- |
+| Claude Code | `~/.claude/skills/` | `%USERPROFILE%\.claude\skills\` |
+| DeepSeek Harness | `~/.agents/skills/` | `%USERPROFILE%\.agents\skills\` |
+
+以 macOS + Claude Code 为例：
+
+```bash
+mkdir -p ~/.claude/skills
+git clone https://github.com/xaiwind/x-article-publisher.git ~/.claude/skills/x-article-publisher
+cd ~/.claude/skills/x-article-publisher && npm install
+```
+
+DeepSeek Harness 把命令里的 `~/.claude/skills` 换成 `~/.agents/skills` 即可。
+
+### 方式二：当普通脚本直接跑
+
 ```bash
 git clone https://github.com/xaiwind/x-article-publisher.git
 cd x-article-publisher
