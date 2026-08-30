@@ -17,7 +17,7 @@
 | AI 助手 | macOS / Linux | Windows |
 | --- | --- | --- |
 | Claude Code | `~/.claude/skills/` | `%USERPROFILE%\.claude\skills\` |
-| DeepSeek Harness | `~/.agents/skills/` | `%USERPROFILE%\.agents\skills\` |
+| Codex / DeepSeek Harness | `~/.agents/skills/` | `%USERPROFILE%\.agents\skills\` |
 
 以 macOS + Claude Code 为例：
 
@@ -27,7 +27,7 @@ git clone https://github.com/xaiwind/x-article-publisher.git ~/.claude/skills/x-
 cd ~/.claude/skills/x-article-publisher && npm install
 ```
 
-DeepSeek Harness 把命令里的 `~/.claude/skills` 换成 `~/.agents/skills` 即可。
+Codex / DeepSeek Harness 把命令里的 `~/.claude/skills` 换成 `~/.agents/skills` 即可。`~/.agents/skills/` 是「开放 Agent Skills 标准」（agentskills.io）的跨助手目录，Codex、DeepSeek Harness、ChatGPT 等共用。
 
 ### 方式二：当普通脚本直接跑
 

@@ -15,7 +15,7 @@ Install this repo into any agent's per-user `skills/` directory and run
 `npm install` inside it. Known host directories:
 
 - Claude Code: `~/.claude/skills/` (macOS/Linux) or `%USERPROFILE%\.claude\skills\` (Windows)
-- DeepSeek Harness: `~/.agents/skills/` (macOS/Linux) or `%USERPROFILE%\.agents\skills\` (Windows)
+- Codex / DeepSeek Harness: `~/.agents/skills/` (macOS/Linux) or `%USERPROFILE%\.agents\skills\` (Windows)
 
 Example (macOS, Claude Code):
 
@@ -24,7 +24,7 @@ git clone https://github.com/xaiwind/x-article-publisher.git ~/.claude/skills/x-
 cd ~/.claude/skills/x-article-publisher && npm install
 ```
 
-For DeepSeek Harness, replace `~/.claude/skills` with `~/.agents/skills`.
+For Codex / DeepSeek Harness, replace `~/.claude/skills` with `~/.agents/skills` (`~/.agents/skills/` is the cross-agent directory per the open agent skills standard at agentskills.io).
 
 ## Usage
 
